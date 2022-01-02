@@ -1,0 +1,40 @@
+{
+  "name": "frontend",
+  "version": "0.0.0",
+  "license": "ISC",
+  "scripts": {
+    "serve": "vite preview",
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@mdi/font": "5.9.55",
+    "axios": "^0.24.0",
+    "roboto-fontface": "*",
+    "vue": "^3.2.25",
+    "vuetify": "^3.0.0-alpha.0",
+    "webfontloader": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/webfontloader": "^1.6.34",
+    "@typescript-eslint/eslint-plugin": "^5.8.1",
+    "@vitejs/plugin-vue": "^2.0.0",
+    "@vue/cli-plugin-babel": "5.0.0-beta.7",
+    "@vue/cli-service": "5.0.0-beta.7",
+    "@vuetify/vite-plugin": "^1.0.0-alpha.3",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-vue": "^8.2.0",
+    "prettier": "^2.5.1",
+    "sass": "^1.38.0",
+    "sass-loader": "^10.0.0",
+    "typescript": "^4.4.4",
+    "vite": "^2.7.2",
+    "vue-cli-plugin-vuetify": "~2.4.5",
+    "vue-tsc": "^0.29.8",
+    "vuetify-loader": "^2.0.0-alpha.0"
+  }
+}
