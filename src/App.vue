@@ -2,19 +2,19 @@
   <img v-if="dev" src="@/assets/tag.png" class="devTag" />
   <v-app>
     <v-main>
-      <HelloWorld />
+      <ProductList />
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
+import ProductList from "@/components/ProductList.vue";
 
 export default {
   name: "App",
 
   components: {
-    HelloWorld,
+    ProductList,
   },
   data: () => ({
     dev: import.meta.env.DEV,
