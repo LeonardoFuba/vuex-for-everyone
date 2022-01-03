@@ -9,12 +9,12 @@
     </ul>
     <p>Total: {{ total }}</p>
     <button @click="checkout">Checkout</button>
-    <p v-if="$store.state.checkoutStatus">{{ $store.state.checkoutStatus }}</p>
+    <p v-if="checkoutStatus">{{ checkoutStatus }}</p>
   </div>
 </template>
 
 <script lang="ts">
-import { Product } from "../store";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "ShoppingCart",
@@ -24,19 +24,12 @@ export default {
     };
   },
   computed: {
-    products<Product>() {
-      // console.log(this.$store.getters.cartProducts);
-      return this.$store.getters.cartProducts;
-    },
-    total() {
-      return this.$store.getters.cartTotal;
-    },
+    ...mapState(["checkoutStatus"]),
+    ...mapGetters({ products: "cartProducts", total: "cartTotal" }),
   },
 
   methods: {
-    checkout() {
-      this.$store.dispatch("checkout");
-    },
+    ...mapActions(["checkout"]),
   },
 };
 </script>

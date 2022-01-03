@@ -25,13 +25,17 @@ export interface State {
 export const key: InjectionKey<Store<State>> = Symbol();
 
 export const store = createStore<State>({
-  state: {
+  state: () => ({
     products: [],
     cart: [],
     checkoutStatus: false,
-  },
+  }),
 
   getters: {
+    productIsInStock() {
+      return (product: Product) => product.inventory > 0;
+    },
+
     availableProducts(state, _getters) {
       return state.products.filter((product) => product.inventory > 0);
     },
@@ -69,8 +73,8 @@ export const store = createStore<State>({
       });
     },
 
-    addProductToCart({ state, commit }, product: Product) {
-      if (product.inventory > 0) {
+    addProductToCart({ state, commit, getters }, product: Product) {
+      if (getters.productIsInStock(product)) {
         const cartItem = state.cart.find((item) => item.id === product.id);
 
         if (!cartItem) {

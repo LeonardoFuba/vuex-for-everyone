@@ -5,7 +5,12 @@
       <ul>
         <li v-for="product in products" :key="product.id">
           {{ product.title }} - {{ product.price }} - {{ product.inventory }}
-          <button @click="addProductToCart(product)">Add to cart</button>
+          <button
+            :disabled="!productIsInStock(product)"
+            @click="addProductToCart(product)"
+          >
+            Add to cart
+          </button>
         </li>
       </ul>
     </v-col>
@@ -13,7 +18,8 @@
 </template>
 
 <script lang="ts">
-import { Product } from "../store";
+import { Product, State } from "../store";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "ProductList",
@@ -22,19 +28,19 @@ export default {
   },
 
   computed: {
-    products() {
-      return this.$store.getters.availableProducts;
-    },
+    ...mapState({ products(state: State) { return state.products; } }),
+    ...mapGetters({ productIsInStock: "productIsInStock" }),
   },
 
   methods: {
-    addProductToCart(product: Product) {
-      this.$store.dispatch("addProductToCart", product);
-    },
+    ...mapActions({
+      fetchProducts: "fetchProducts",
+      addProductToCart: "addProductToCart",
+    }),
   },
 
   created() {
-    this.$store.dispatch("fetchProducts");
+    this.fetchProducts();
   },
 };
 </script>
