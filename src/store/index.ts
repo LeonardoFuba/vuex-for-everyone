@@ -19,6 +19,7 @@ export interface CartItem {
 export interface State {
   products: Array<Product>;
   cart: Array<CartItem>;
+  checkoutStatus: boolean;
 }
 
 export const key: InjectionKey<Store<State>> = Symbol();
@@ -27,6 +28,7 @@ export const store = createStore<State>({
   state: {
     products: [],
     cart: [],
+    checkoutStatus: false,
   },
 
   getters: {
@@ -34,7 +36,7 @@ export const store = createStore<State>({
       return state.products.filter((product) => product.inventory > 0);
     },
 
-    cartProducts(state: State, _getters) {
+    cartProducts(state, _getters) {
       return state.cart.map((cartItem: CartItem) => {
         const product = state.products.find(
           (product) => product.id === cartItem.id,
@@ -48,7 +50,7 @@ export const store = createStore<State>({
       });
     },
 
-    cartTotal(state: State, getters) {
+    cartTotal(state, getters) {
       return getters.cartProducts.reduce(
         (total: number, product: CartItem) =>
           total + (product.price || 0) * product.quantity,
@@ -67,44 +69,63 @@ export const store = createStore<State>({
       });
     },
 
-    addProductToCart(context, product: Product) {
+    addProductToCart({ state, commit }, product: Product) {
       if (product.inventory > 0) {
-        const cartItem = context.state.cart.find(
-          (item) => item.id === product.id,
-        );
+        const cartItem = state.cart.find((item) => item.id === product.id);
 
         if (!cartItem) {
-          context.commit("pushProductToCart", product.id);
+          commit("pushProductToCart", product.id);
         } else {
-          context.commit("incrementItemQuantity", cartItem);
+          commit("incrementItemQuantity", cartItem);
         }
-        context.commit("decrementProductInventory", product);
+        commit("decrementProductInventory", product);
 
         //
       } else {
         //show out of stock message
       }
     },
+
+    checkout({ state, commit }) {
+      shop.buyProducts(
+        state.cart,
+        () => {
+          commit("emptyCart");
+          commit("setCheckoutStatus", "success");
+        },
+        () => {
+          commit("setCheckoutStatus", "fail");
+        },
+      );
+    },
   },
 
   mutations: {
-    setProducts(state, products) {
+    setProducts(state, products: Product[]) {
       state.products = products;
     },
 
-    pushProductToCart(state, productId) {
+    pushProductToCart(state, productId: number) {
       state.cart.push({
         id: productId,
         quantity: 1,
       });
     },
 
-    incrementItemQuantity(state, cartItem: CartItem) {
+    incrementItemQuantity(_state, cartItem: CartItem) {
       cartItem.quantity++;
     },
 
-    decrementProductInventory(state, product: Product) {
+    decrementProductInventory(_state, product: Product) {
       product.inventory--;
+    },
+
+    setCheckoutStatus(state, status: boolean) {
+      state.checkoutStatus = status;
+    },
+
+    emptyCart(state) {
+      state.cart = [];
     },
   },
 });

@@ -1,4 +1,4 @@
-import { Product } from "../store";
+import { CartItem } from "../store";
 
 /**
  * Mocking client-server processing
@@ -14,7 +14,7 @@ export default {
     setTimeout(() => cb(_products), 100);
   },
 
-  buyProducts(products: Product[], cb: any, errorCb: any) {
+  buyProducts(products: CartItem[], cb: any, errorCb: any) {
     setTimeout(() => {
       // simulate random checkout failure.
       Math.random() > 0.5 || navigator.webdriver ? cb() : errorCb();
