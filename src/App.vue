@@ -3,18 +3,22 @@
   <v-app>
     <v-main>
       <ProductList />
+      <hr />
+      <ShoppingCart />
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
 import ProductList from "@/components/ProductList.vue";
+import ShoppingCart from "@/components/ShoppingCart.vue";
 
 export default {
   name: "App",
 
   components: {
     ProductList,
+    ShoppingCart,
   },
   data: () => ({
     dev: import.meta.env.DEV,

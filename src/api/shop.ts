@@ -1,9 +1,4 @@
-export interface Product {
-  id: number;
-  title: string;
-  price: number;
-  inventory: number;
-}
+import { Product } from "../store";
 
 /**
  * Mocking client-server processing
